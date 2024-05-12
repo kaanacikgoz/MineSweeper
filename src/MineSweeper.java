@@ -1,19 +1,17 @@
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
 public class MineSweeper {
 
-    String[][] gameBoard;
-    String[][] mineBoard;
-    int mineNum;
-    int randomRow, randomColumn;
-    int boardRow, boardColumn;
-    static Scanner input = new Scanner(System.in);
+    private String[][] gameBoard, mineBoard;
+    private int boardRow, boardColumn;
+    private int mineNum;
+    private final Scanner input = new Scanner(System.in);
 
-    void setBoard() {
-        boolean isTrue = true;
-        while (isTrue) {
+    private void setBoard() {
+        while (true) {
             System.out.print("Enter the board's row: ");
             boardRow = input.nextInt();
             System.out.print("Enter the board's columns: ");
@@ -21,20 +19,16 @@ public class MineSweeper {
             if (boardRow<2 || boardColumn<2) {
                 System.out.println("Rows or columns can't be less than 2!");
             } else {
-                isTrue = false;
+                break;
             }
         }
-
         gameBoard = new String[boardRow][boardColumn];
-        for (int i=0;i<gameBoard.length;i++) {
-            for (int j=0;j<gameBoard[i].length;j++) {
-                gameBoard[i][j] = "-";
-            }
+        for (String[] strings : gameBoard) {
+            Arrays.fill(strings, "-");
         }
-        showBoard();
     }
 
-    void showBoard() {
+    private void showBoard() {
         for (String[] row:gameBoard) {
             for(String column:row) {
                 System.out.print(column+" ");
@@ -43,19 +37,17 @@ public class MineSweeper {
         }
     }
 
-    void setMine() {
+    private void setMine() {
         mineBoard = new String[boardRow][boardColumn];
         Random random = new Random();
         mineNum = (boardRow*boardColumn)/4;
-        for (int i = 0; i< mineBoard.length; i++) {
-            for (int j = 0; j< mineBoard[i].length; j++) {
-                mineBoard[i][j] = "-";
-            }
+        for (String[] strings : mineBoard) {
+            Arrays.fill(strings, "-");
         }
         int mine=0;
         while (mine<mineNum) {
-            randomRow = random.nextInt(boardRow);
-            randomColumn = random.nextInt(boardColumn);
+            int randomRow = random.nextInt(boardRow);
+            int randomColumn = random.nextInt(boardColumn);
             if (mineBoard[randomRow][randomColumn].equals("-")) {
                 mineBoard[randomRow][randomColumn] = "*";
                 mine++;
@@ -64,7 +56,7 @@ public class MineSweeper {
         showMine();
     }
 
-    void showMine() {
+    private void showMine() {
         for (String[] row: mineBoard) {
             for (String column:row) {
                 System.out.print(column+" ");
@@ -79,11 +71,12 @@ public class MineSweeper {
         setMine();
         System.out.println("----------------------");
         System.out.println("----------------------");
-        System.out.println("Welcome the mine sweeper game!");
+        System.out.println("Welcome The Mine Sweeper Game!");
 
         int userRow, userColumn, blank=boardRow*boardColumn;
         boolean isWin = false;
         while (true) {
+            showBoard();
             System.out.print("Enter the row: ");
             userRow = input.nextInt();
             System.out.print("Enter the column: ");
@@ -91,12 +84,12 @@ public class MineSweeper {
             System.out.println("----------------------");
             System.out.println("----------------------");
             if (userRow>=boardRow || userColumn>=boardColumn) {
-                System.out.println("Coordinate can't be found, please enter another coordinate");
+                System.out.println("Coordinate can't be found, please enter another coordinate!");
             } else if (mineBoard[userRow][userColumn].equals("*")) {
                 System.out.println("Game Over!");
                 break;
             } else if (!Objects.equals(gameBoard[userRow][userColumn], "-")) {
-                System.out.println("This coordinate selected before, enter another coordinate");
+                System.out.println("This coordinate selected before, enter another coordinate!");
             } else if (blank-1==mineNum){
                 isWin = true;
                 break;
@@ -104,16 +97,15 @@ public class MineSweeper {
                 gameBoard[userRow][userColumn] = mineDistance(userRow,userColumn);
                 blank--;
             }
-            showBoard();
         }
         if (isWin) {
             gameBoard[userRow][userColumn] = mineDistance(userRow,userColumn);
             showBoard();
-            System.out.println("You win!");
+            System.out.println("You Win!");
         }
     }
 
-    String mineDistance(int userRow, int userColumn) {
+    private String mineDistance(int userRow, int userColumn) {
         int count=0;
         if (userRow==0&&userColumn==0) {
             if (mineBoard[0][1].equals("*")) {
