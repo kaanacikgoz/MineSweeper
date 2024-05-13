@@ -5,14 +5,16 @@ import java.util.Scanner;
 
 public class MineSweeper {
 
+    //Variables
     private String[][] gameBoard, mineBoard;
     private int boardRow, boardColumn;
     private int mineNum;
     private final Scanner input = new Scanner(System.in);
 
+    // Adjusts the size of the game board
     private void setBoard() {
         while (true) {
-            System.out.print("Enter the board's row: ");
+            System.out.print("Enter the board's row: ");    // Evaluation Form 7
             boardRow = input.nextInt();
             System.out.print("Enter the board's columns: ");
             boardColumn = input.nextInt();
@@ -28,6 +30,7 @@ public class MineSweeper {
         }
     }
 
+    // Shows the game board
     private void showBoard() {
         for (String[] row:gameBoard) {
             for(String column:row) {
@@ -37,6 +40,7 @@ public class MineSweeper {
         }
     }
 
+    // Sets random mines on the game board
     private void setMine() {
         mineBoard = new String[boardRow][boardColumn];
         Random random = new Random();
@@ -45,7 +49,7 @@ public class MineSweeper {
             Arrays.fill(strings, "-");
         }
         int mine=0;
-        while (mine<mineNum) {
+        while (mine<mineNum) {    // Evaluation Form 8
             int randomRow = random.nextInt(boardRow);
             int randomColumn = random.nextInt(boardColumn);
             if (mineBoard[randomRow][randomColumn].equals("-")) {
@@ -56,6 +60,7 @@ public class MineSweeper {
         showMine();
     }
 
+    // Shows the mine board
     private void showMine() {
         for (String[] row: mineBoard) {
             for (String column:row) {
@@ -65,6 +70,7 @@ public class MineSweeper {
         }
     }
 
+    // Starts the game!
     void run() {
         setBoard();
         System.out.println("Mine's Location");
@@ -76,35 +82,36 @@ public class MineSweeper {
         int userRow, userColumn, blank=boardRow*boardColumn;
         boolean isWin = false;
         while (true) {
-            showBoard();
-            System.out.print("Enter the row: ");
+            showBoard();    // Evaluation Form 11
+            System.out.print("Enter the row: ");    // Evaluation Form 9
             userRow = input.nextInt();
             System.out.print("Enter the column: ");
             userColumn = input.nextInt();
             System.out.println("----------------------");
             System.out.println("----------------------");
-            if (userRow>=boardRow || userColumn>=boardColumn) {
+            if (userRow>=boardRow || userColumn>=boardColumn) {    // Evaluation Form 10
                 System.out.println("Coordinate can't be found, please enter another coordinate!");
-            } else if (mineBoard[userRow][userColumn].equals("*")) {
-                System.out.println("Game Over!");
+            } else if (mineBoard[userRow][userColumn].equals("*")) {    // Evaluation Form 13
+                System.out.println("Game Over!");    // Evaluation Form 15
                 break;
             } else if (!Objects.equals(gameBoard[userRow][userColumn], "-")) {
                 System.out.println("This coordinate selected before, enter another coordinate!");
-            } else if (blank-1==mineNum){
+            } else if (blank-1==mineNum){    // Evaluation Form 14
                 isWin = true;
                 break;
             } else {
-                gameBoard[userRow][userColumn] = mineDistance(userRow,userColumn);
+                gameBoard[userRow][userColumn] = mineDistance(userRow,userColumn);    // Evaluation Form 12
                 blank--;
             }
         }
-        if (isWin) {
+        if (isWin) {    // Evaluation Form 14
             gameBoard[userRow][userColumn] = mineDistance(userRow,userColumn);
             showBoard();
-            System.out.println("You Win!");
+            System.out.println("You Win!");    // Evaluation Form 15
         }
     }
 
+    // Mine counting algorithm
     private String mineDistance(int userRow, int userColumn) {
         int count=0;
         if (userRow==0&&userColumn==0) {
