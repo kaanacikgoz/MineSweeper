@@ -40,7 +40,7 @@ public class MineSweeper {
         }
     }
 
-    // Sets random mines on the game board
+    // Sets random mines on the mine board
     private void setMine() {
         mineBoard = new String[boardRow][boardColumn];
         Random random = new Random();
